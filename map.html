@@ -1,0 +1,280 @@
+﻿<!doctype html>
+<html lang="es">
+  <head>
+	<link rel="stylesheet" href="http://openlayers.org/en/v3.12.0/css/ol.css" type="text/css">
+	<!-- Hoja de estilos de CERCLE-->
+	<link rel="stylesheet" href="./css/cercle.css" type="text/css">
+    <style>
+		html,body{
+			margin: 1px;
+			padding: 0px;
+		}
+		#map {
+			position:absolute;
+			top: 138px;
+			bottom: 2px;
+			right: 2px;
+			left: 2px;
+			padding: 0px;
+			margin: 0px;
+		}
+    </style>
+    <title>Cercle Test 1</title>
+    <script src="http://openlayers.org/en/v3.12.0/build/ol.js" type="text/javascript"></script>
+
+	<!-- Añadimos la libreria layerswitcher para el control de capas -->
+	<link rel="stylesheet" href="./js/ol3-layerswitcher-master/src/ol3-layerswitcher.css" />
+	<script src="./js/ol3-layerswitcher-master/src/ol3-layerswitcher.js"></script>
+
+  </head>
+  <body>
+	<div id="cabecera">
+		<img src="./img/cercle_cabecera_izquierda.png" alt="cercle_cabecera_izquierda" id="cercle_cabecera_izquierda">
+		<img src="./img/cercle_cabecera_derecha.png" alt="cercle_cabecera_derecha" id="cercle_cabecera_derecha">
+	</div>
+	<h4 id="tituloMapa">PLAN DE USO PÚBLICO DEVESA</h4>
+	<div id="map"></div>
+    <script type="text/javascript">
+	var layers = [
+	
+		/*new ol.layer.Group({
+						'title': 'Base maps',
+						layers: [
+							new ol.layer.Tile({
+								title: 'Water color',
+								type: 'base',
+								visible: false,
+								source: new ol.source.Stamen({
+									layer: 'watercolor'
+								})
+							}),
+							new ol.layer.Tile({
+								title: 'OSM',
+								type: 'base',
+								visible: false,
+								source: new ol.source.OSM()
+							}),
+							new ol.layer.Tile({
+								title: 'Satellite',
+								type: 'base',
+								visible: true,
+								source: new ol.source.MapQuest({layer: 'sat'})
+							})
+						]
+					}),
+					new ol.layer.Group({
+						title: 'Overlays',
+						layers: [
+							new ol.layer.Tile({
+								title: 'Countries',
+								source: new ol.source.TileWMS({
+									url: 'http://demo.opengeo.org/geoserver/wms',
+									params: {'LAYERS': 'ne:ne_10m_admin_1_states_provinces_lines_shp'},
+									serverType: 'geoserver'
+								})
+							})
+						]
+					})*/
+			
+			// GRUPO DE CAPAS BASE
+			new ol.layer.Group({
+						'title': 'Capas de Base',
+						layers: [
+							new ol.layer.Tile({
+								title: 'Ortofoto / Satélite',
+								type: 'base',
+								visible: true,
+								source: new ol.source.TileWMS({
+								  url: 'http://www.ign.es/wms-inspire/pnoa-ma',
+								  params: {LAYERS: 'OI.OrthoimageCoverage', VERSION: '1.3.0'}
+								})
+							}),
+							new ol.layer.Tile({
+								title: 'Base 1:5000 ICV',
+								type: 'base',
+								visible: false,
+								source: new ol.source.TileWMS({
+								  url: 'http://terramapas.icv.gva.es/mapa_topografico_base',
+								  params: {LAYERS: 'LimitesUrbanosCV05,UsosCultivosCV05,UsosServiciosInstalacionesCV05,UsosCarreterasCV05,ZonasArboladasCV05,UsosHidrografiaCV05,ComuRedCV05,ConsPoligonalesCV05,ConsEdifCV05,ConsLinealesCV05,ConsServinstCV05,ConsPuntualesCV05,HidrolinealCV05,HidropuntualCV05,OrogcurvasCV05,OroglineasCV05,OrogpuntosCV05,Toponimia_menor-Toponimia_menor,Toponimia_mayor-Toponimia_major,red_carreteras-xarxa_carreteres,LimitesAdministrativos', VERSION: '1.3.0'}
+								})
+							}),
+							new ol.layer.Tile({
+								title: 'Open Street Map',
+								type: 'base',
+								visible: false,
+								source: new ol.source.OSM()
+							}),
+						]
+					}),
+					
+			// GRUPO DE CAPAS TEMATICAS
+			new ol.layer.Group({
+						title: 'Capas Devesa',
+						layers: [
+							new ol.layer.Tile({
+								title: 'Zonificación',
+								source: new ol.source.TileWMS({
+								url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+								params: {LAYERS: 'zonificacion_devesa', 'TILED': true}
+							  })
+							}),
+							new ol.layer.Tile({
+								title: 'Malladas',
+								source: new ol.source.TileWMS({
+								url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+								params: {LAYERS: 'malladas', 'TILED': true}
+							  })
+							}),
+							new ol.layer.Tile({
+								title: 'Ambito de actuación',
+								source: new ol.source.TileWMS({
+								url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+								params: {LAYERS: 'ambito_actuacion', 'TILED': true}
+							  })
+							}),
+							new ol.layer.Tile({
+								title: 'Red de carreteras',
+								source: new ol.source.TileWMS({
+								url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+								params: {LAYERS: 'red_de_carreteras', 'TILED': true}
+							  })
+							}),
+							new ol.layer.Tile({
+								title: 'Transito Rodado motorizado',
+								source: new ol.source.TileWMS({
+								url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+								params: {LAYERS: 'transito_rodado-motorizado', 'TILED': true}
+							  })
+							}),
+							new ol.layer.Tile({
+								title: 'Red peatonal',
+								source: new ol.source.TileWMS({
+								url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+								params: {LAYERS: 'red_peatonal', 'TILED': true}
+							  })
+							}),
+							new ol.layer.Tile({
+								title: 'Itinerarios ciclistas',
+								source: new ol.source.TileWMS({
+								url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+								params: {LAYERS: 'itinerarios_ciclistas', 'TILED': true}
+							  })
+							}),
+							new ol.layer.Tile({
+								title: 'Itinerarios señalizados',
+								source: new ol.source.TileWMS({
+								url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+								params: {LAYERS: 'itinerarios_senyalizados', 'TILED': true}
+							  })
+							}),
+							new ol.layer.Tile({
+								title: 'Acceso restringido',
+								source: new ol.source.TileWMS({
+								url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+								params: {LAYERS: 'acceso_restringido', 'TILED': true}
+							  })
+							})
+							
+						]
+					})
+	
+          /*new ol.layer.Tile({
+            title: 'Ortofotos',
+            source: new ol.source.TileWMS({
+              url: 'http://www.ign.es/wms-inspire/pnoa-ma',
+              params: {LAYERS: 'OI.OrthoimageCoverage', VERSION: '1.3.0'}
+            })
+          }),*/
+		  /*new ol.source.ImageWMS({
+            title: 'Ortofotos',
+            source: new ol.source.TileWMS({
+              url: 'http://www.ign.es/wms-inspire/pnoa-ma',
+              params: {LAYERS: 'OI.OrthoimageCoverage', VERSION: '1.3.0'}
+            })
+          })*/
+		  
+		  /*new ol.layer.Image({
+          extent: [-18.409639, 26.275479, 5.225974, 44.85536],
+          source: new ol.source.ImageWMS({
+            url: 'http://cartoweb.cma.gva.es/arcgis/services/espacios_protegidos/MapServer/WMSServer',
+            params: {LAYERS: 'eepp_parques_naturales', VERSION: '1.3.0'}
+          })
+		  })*/
+		  
+		  /*new ol.layer.Image({
+          extent: [-18.409639, 26.275479, 5.225974, 44.85536],
+          source: new ol.source.ImageWMS({
+            url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+            params: {LAYERS: 'zonificacion_devesa,ambito_actuacion,itinerarios_ciclistas,itinerarios_senyalizados,acceso_restringido', VERSION: '1.1.1'}
+          })
+		  })*/
+		  
+		  /*new ol.layer.Tile({
+          extent: [-18.409639, 26.275479, 5.225974, 44.85536],
+          source: new ol.source.TileWMS({
+            url: 'http://52.31.138.200:8080/geoserver/devesa/wms?SERVICE=WMS&',
+            params: {LAYERS: 'zonificacion_devesa,ambito_actuacion,itinerarios_ciclistas,itinerarios_senyalizados,acceso_restringido', 'TILED': true}
+          })
+          })*/
+		  
+		  
+		  /*new ol.layer.Tile({
+          extent: [-18.409639, 26.275479, 5.225974, 44.85536],
+          source: new ol.source.TileWMS({
+            url: 'http://cartoweb.cma.gva.es/arcgis/services/espacios_protegidos/MapServer/WMSServer',
+            params: {LAYERS: 'eepp_parques_naturales', 'TILED': true}
+          })
+        })*/
+		
+		
+		  /*new ol.layer.Tile({
+            title: 'Ortofotos',
+            source: new ol.source.WMTS({
+              url: 'http://terramapas.icv.gva.es/ortoactualidad/?',
+              params: {layer: 'ortoactualidad'}
+            })
+          })*/
+        ];
+	
+      var map = new ol.Map({
+        layers: layers,
+		target: 'map',
+        view: new ol.View({
+		  //projection: 'EPSG:4326',
+		  //center: [-0.3164, 39.3498],
+		  // Cambiamos a EPSG:3857 Spherical Mercator para mejorar la visualización, queda pendiente cambiar a EPSG 25830
+		  center: ol.proj.transform([-0.3164, 39.3498], 'EPSG:4326', 'EPSG:3857'),
+          zoom: 13
+        })
+	  });
+		
+		/*
+		var projection = new ol.proj.Projection({
+        code: 'EPSG:25830',
+        units: 'm'
+        });
+		
+		
+		view: new ol.View({
+          projection: projection,
+          center: [4344000, 700000],
+          zoom: 9
+        });*/
+      
+	  //Añadimos un control de barra de zoom 
+ 	  map.addControl(new ol.control.ZoomSlider());
+	  
+	   // Texto al pasar el ratón por encima del TOC de capas
+	   var layerSwitcher = new ol.control.LayerSwitcher({ 
+		  tipLabel: 'Capas' 
+	   });
+	   // Añadimos el control de capas
+	   map.addControl(layerSwitcher);
+	   // Desplegamos el control de capas
+	   layerSwitcher.showPanel();
+	  
+	  
+    </script>
+	
+  </body>
+</html>

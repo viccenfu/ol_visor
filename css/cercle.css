@@ -1,0 +1,22 @@
+/*#cercle_cabecera_izquierda {
+    float: left;
+}*/
+
+body {
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 0.7em;
+}
+
+#cercle_cabecera_derecha {
+    float: right;
+}
+
+#cabecera {
+    background-color:#a11d21;
+}
+
+#tituloMapa {
+	font-size: 1.1em;
+	margin-top: 0px;
+    margin-bottom: 0px;
+}
